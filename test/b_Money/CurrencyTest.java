@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class CurrencyTest {
 	Currency SEK, DKK, NOK, EUR;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		/* Setup currencies with exchange rates */
@@ -18,27 +18,33 @@ public class CurrencyTest {
 
 	@Test
 	public void testGetName() {
-		fail("Write test case here");
+		assertEquals("SEK", SEK.getName());
+		assertEquals("DKK", DKK.getName());
+		assertEquals("EUR", EUR.getName());
 	}
-	
+
 	@Test
 	public void testGetRate() {
-		fail("Write test case here");
+		assertEquals(Double.valueOf(0.15), SEK.getRate());
+		assertEquals(Double.valueOf(0.20), DKK.getRate());
+		assertEquals(Double.valueOf(1.5), EUR.getRate());
 	}
-	
+
 	@Test
 	public void testSetRate() {
-		fail("Write test case here");
+		SEK.setRate(0.25);
+		assertEquals(Double.valueOf(0.25), SEK.getRate());
 	}
-	
+
 	@Test
 	public void testGlobalValue() {
-		fail("Write test case here");
+		assertEquals(Integer.valueOf(1500), SEK.universalValue(10000));
+		assertEquals(Integer.valueOf(2000), DKK.universalValue(10000));
+		assertEquals(Integer.valueOf(1500), EUR.universalValue(1000));
 	}
-	
+
 	@Test
 	public void testValueInThisCurrency() {
 		fail("Write test case here");
 	}
-
 }
