@@ -4,7 +4,7 @@ public class Currency {
 	private String name;
 	private Double rate;
 
-/**
+	/**
 	 * New Currency
 	 * The rate argument of each currency indicates that Currency's "universal" exchange rate.
 	 * Imagine that we define the rate of each currency in relation to some universal currency.
@@ -14,12 +14,13 @@ public class Currency {
 	 * @param rate The exchange rate of this Currency
 	 */
 
-	Currency (String name, Double rate) {
+	Currency(String name, Double rate) {
 		this.name = name;
 		this.rate = rate;
 	}
 
-/** Convert an amount of this Currency to its value in the general "universal currency"
+	/**
+	 * Convert an amount of this Currency to its value in the general "universal currency"
 	 * (As mentioned in the documentation of the Currency constructor)
 	 *
 	 * @param amount An amount of cash of this currency.
@@ -27,10 +28,12 @@ public class Currency {
 	 */
 
 	public Integer universalValue(Integer amount) {
-
+		return (int) Math.round(amount * rate);
 	}
 
-/** Get the name of this Currency.
+	/**
+	 * Get the name of this Currency.
+	 *
 	 * @return name of Currency
 	 */
 
@@ -38,7 +41,8 @@ public class Currency {
 		return name;
 	}
 
-/** Get the rate of this Currency.
+	/**
+	 * Get the rate of this Currency.
 	 *
 	 * @return rate of this Currency
 	 */
@@ -47,22 +51,25 @@ public class Currency {
 		return rate;
 	}
 
-/** Set the rate of this currency.
+	/**
+	 * Set the rate of this currency.
 	 *
 	 * @param rate New rate for this Currency
 	 */
 
 	public void setRate(Double rate) {
-
+		this.rate = rate;
 	}
 
-/** Convert an amount from another Currency to an amount in this Currency
+	/**
+	 * Convert an amount from another Currency to an amount in this Currency
 	 *
-	 * @param amount Amount of the other Currency
-	 * @param othercurrency The other Currency
-	*/
+	 * @param amount        Amount of the other Currency
+	 * @param otherCurrency The other Currency
+	 * @return The converted amount in this Currency
+	 */
 
-	public Integer valueInThisCurrency(Integer amount, Currency othercurrency) {
-
+	public Integer valueInThisCurrency(Integer amount, Currency otherCurrency) {
+		return (int) Math.round(amount * (otherCurrency.getRate() / this.rate));
 	}
 }

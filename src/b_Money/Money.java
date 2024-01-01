@@ -134,5 +134,6 @@ public class Money implements Comparable {
 				return -1;
 			}
 		}
+		return -1;
 	}
 }

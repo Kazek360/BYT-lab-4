@@ -25,7 +25,13 @@ public class MoneyTest {
 
 	@Test
 	public void testGetAmount() {
-		fail("Write test case here");
+		assertEquals(Integer.valueOf(10000), SEK100.getAmount());
+		assertEquals(Integer.valueOf(1000), EUR10.getAmount());
+		assertEquals(Integer.valueOf(20000), SEK200.getAmount());
+		assertEquals(Integer.valueOf(2000), EUR20.getAmount());
+		assertEquals(Integer.valueOf(0), SEK0.getAmount());
+		assertEquals(Integer.valueOf(0), EUR0.getAmount());
+		assertEquals(Integer.valueOf(-10000), SEKn100.getAmount());
 	}
 
 	@Test
