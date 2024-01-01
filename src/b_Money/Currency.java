@@ -35,7 +35,7 @@ public class Currency {
 	 */
 
 	public String getName() {
-
+		return name;
 	}
 
 /** Get the rate of this Currency.
@@ -44,7 +44,7 @@ public class Currency {
 	 */
 
 	public Double getRate() {
-
+		return rate;
 	}
 
 /** Set the rate of this currency.

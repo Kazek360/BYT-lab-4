@@ -1,6 +1,7 @@
 package b_Money;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 public class Money implements Comparable {
 	private int amount;
@@ -23,10 +24,7 @@ public class Money implements Comparable {
 	 */
 
 	public Integer getAmount() {
-//		Double d = Double.parseDouble(amount + "");
-//		DecimalFormat df = new DecimalFormat("#0.00");
-//
-//		return Double.parseDouble(new DecimalFormat("#0.00").format(Double.parseDouble(amount+"")));
+
 		return amount;
 	}
 	
@@ -47,7 +45,7 @@ public class Money implements Comparable {
 	 */
 
 	public String toString() {
-		
+		return new DecimalFormat("#0.00").format(Double.parseDouble(amount+"")) + " " + currency.getName();
 	}
 	
 /**
@@ -56,7 +54,7 @@ public class Money implements Comparable {
 	 */
 
 	public Integer universalValue() {
-		
+		return (int)(amount * currency.getRate());
 	}
 	
 /**
@@ -66,7 +64,11 @@ public class Money implements Comparable {
 	 */
 
 	public Boolean equals(Money other) {
-		
+		if (this.currency.getName().equals(other.currency.getName()) && this.amount == other.getAmount()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 /**
@@ -77,7 +79,7 @@ public class Money implements Comparable {
 	 */
 
 	public Money add(Money other) {
-		
+		return new Money((int)(this.amount+(other.amount * other.currency.getRate())), currency);
 	}
 
 /**
@@ -88,7 +90,7 @@ public class Money implements Comparable {
 	 */
 
 	public Money sub(Money other) {
-		
+		return new Money((int)(this.amount-(other.amount * other.currency.getRate())), currency);
 	}
 	
 /**
@@ -97,7 +99,10 @@ public class Money implements Comparable {
 	 */
 
 	public Boolean isZero() {
-		
+		if (amount==0)
+			return true;
+		else
+			return false;
 	}
 /**
 	 * Negate the amount of money, i.e. if the amount is 10.0 SEK the negation returns -10.0 SEK
@@ -105,7 +110,7 @@ public class Money implements Comparable {
 	 */
 
 	public Money negate() {
-		
+		return new Money(amount * (-1),currency);
 	}
 	
 /**
@@ -119,6 +124,15 @@ public class Money implements Comparable {
 	 */
 
 	public int compareTo(Object other) {
-		
+		Money m = (Money) other;
+		if (this.currency.getName().equals(m.currency.getName())){
+			if (Objects.equals(this.getAmount(), m.getAmount())){
+				return 0;
+			} else if (this.getAmount() > m.getAmount()){
+				return 1;
+			} else {
+				return -1;
+			}
+		}
 	}
 }
