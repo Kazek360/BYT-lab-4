@@ -70,6 +70,6 @@ public class Currency {
      */
 
     public Integer valueInThisCurrency(Integer amount, Currency otherCurrency) {
-        return (int) Math.round(amount * (otherCurrency.getRate() / this.rate));
+        return (int) Math.round(amount * otherCurrency.getRate());
     }
 }

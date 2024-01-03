@@ -23,11 +23,10 @@ public class Money implements Comparable {
     /**
      * Return the amount of money.
      *
-     * @return Amount of money in Double type.
+     * @return Amount of money in Integer type.
      */
 
     public Integer getAmount() {
-
         return amount;
     }
 
@@ -71,7 +70,7 @@ public class Money implements Comparable {
      */
 
     public Boolean equals(Money other) {
-        if (this.currency.getName().equals(other.currency.getName()) && this.amount == other.getAmount()) {
+        if (this.amount == other.getAmount()) {
             return true;
         } else {
             return false;

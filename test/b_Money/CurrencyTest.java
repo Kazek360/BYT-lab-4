@@ -45,6 +45,8 @@ public class CurrencyTest {
 
 	@Test
 	public void testValueInThisCurrency() {
-		fail("Write test case here");
+		assertEquals(Integer.valueOf(200), SEK.valueInThisCurrency(1000,DKK));
+		assertEquals(Integer.valueOf(150), SEK.valueInThisCurrency(1000,SEK));
+		assertEquals(Integer.valueOf(1500), SEK.valueInThisCurrency(1000,EUR));
 	}
 }
