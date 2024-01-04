@@ -1,9 +1,13 @@
 package b_Money;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+
 
 public class BankTest {
 	Currency SEK, DKK;
@@ -36,8 +40,14 @@ public class BankTest {
 		assertEquals(DKK, DanskeBank.getCurrency());
 	}
 
+	/**
+	 * Testuje czy otwieranie konta działa poprawnie
+	 * @throws AccountExistsException wyrzuca jeśli konto istnieje
+	 * @throws AccountDoesNotExistException wyrzuca jeśli konto nie istnieje
+	 */
 	@Test
 	public void testOpenAccount() throws AccountExistsException, AccountDoesNotExistException {
+		// Nie działa, powinno wywalić wyjątek, bo już takie konto istnieje w tym banku.
 		assertThrows(AccountExistsException.class, () ->{
 			SweBank.openAccount("Ulrika");
 		});
@@ -45,26 +55,69 @@ public class BankTest {
 
 	@Test
 	public void testDeposit() throws AccountDoesNotExistException {
-		fail("Write test case here");
+		//Wyrzuca NullPointerEception zamiast AccountDoesNotExistException
+		assertThrows(AccountDoesNotExistException.class, ()->{
+			SweBank.deposit("Testowa", new Money(200, SEK));
+		});
+
+		//Twierdzi że takie konto nie istnieje, mimo że zostało stworzone powyżej
+		Nordea.deposit("Bob", new Money(400, SEK));
+		assertEquals(Integer.valueOf(60), Nordea.getBalance("Bob"));
 	}
 
 	@Test
 	public void testWithdraw() throws AccountDoesNotExistException {
-		fail("Write test case here");
+		assertThrows(AccountDoesNotExistException.class, ()->{
+			SweBank.withdraw("Testowa", new Money(200, SEK));
+		});
+
+		Nordea.deposit("Bob", new Money(200, SEK));
+		Nordea.withdraw("Bob", new Money(200, SEK));
+		//Konto nie istnieje... znowu
+		//Cannot invoke "b_Money.Account.deposit(b_Money.Money)" because "account" is null
+		assertEquals(Integer.valueOf(0), Nordea.getBalance("Bob"));
 	}
 	
 	@Test
 	public void testGetBalance() throws AccountDoesNotExistException {
-		fail("Write test case here");
+		assertThrows(AccountDoesNotExistException.class, ()->{
+			Nordea.getBalance("Test");
+		});
+		//Konto nie istnieje...
+		//Cannot invoke "b_Money.Account.deposit(b_Money.Money)" because "account" is null
+		assertEquals(Integer.valueOf(0), Nordea.getBalance("Bob"));
 	}
 	
 	@Test
 	public void testTransfer() throws AccountDoesNotExistException {
-		fail("Write test case here");
+		assertThrows(AccountDoesNotExistException.class, ()->{
+			Nordea.transfer("Bob", DanskeBank, "test", new Money(200, SEK));
+		});
+
+		//Konto nie istnieje...
+		Nordea.transfer("Bob", SweBank, "Bob", new Money(200,SEK));
+		assertEquals(Integer.valueOf(30), SweBank.getBalance("Bob"));
 	}
 	
 	@Test
 	public void testTimedPayment() throws AccountDoesNotExistException {
-		fail("Write test case here");
+		//Sprawdzamy czy wywali błąd dla nieistniejącego konta
+		assertThrows(AccountDoesNotExistException.class, ()->{
+			Nordea.addTimedPayment("Test", "1", 3,1, new Money(200, SEK), SweBank,"Bob");
+		});
+		//Dodajemy płatność czasową oraz sprawdzamy czy po upłynięciu początkowej wartości
+		//next nasąpi przelew
+		Nordea.addTimedPayment("Bob", "1", 3,1, new Money(200, SEK), SweBank,"Bob");
+		Nordea.tick();
+		assertEquals(Integer.valueOf(30), SweBank.getBalance("Bob"));
+
+		//Usunięcie płatności czasowej i sprawdzenie czy po kolejnych kilku tyknięciach zapłąci czy nie.
+		Nordea.removeTimedPayment("Bob","1");
+		for (int i = 0; i < 3; i++) {
+			Nordea.tick();
+		}
+
+		assertEquals(Integer.valueOf(30), SweBank.getBalance("Bob"));
+
 	}
 }

@@ -43,7 +43,8 @@ public class Bank {
 			throw new AccountExistsException();
 		}
 		else {
-			accountlist.get(accountid);
+			//Zmieniam get na put, bo chcemy założyć konto.
+			accountlist.put(accountid, new Account(accountid, this.currency));
 		}
 	}
 	
@@ -54,12 +55,15 @@ public class Bank {
 	 * @throws AccountDoesNotExistException If the account does not exist
 	 */
 	public void deposit(String accountid, Money money) throws AccountDoesNotExistException {
-		if (accountlist.containsKey(accountid)) {
+			//Patrzę czy nie ma takiego konta, a nie czy jest.
+		if (!accountlist.containsKey(accountid)) {
 			throw new AccountDoesNotExistException();
 		}
 		else {
+			//Chcę wpłacać na konto a nie wyciągać info o koncie. Dlatego biorę, dodaję i modyfikuję listę.
 			Account account = accountlist.get(accountid);
 			account.deposit(money);
+			accountlist.put(accountid,account);
 		}
 	}
 	
@@ -74,8 +78,10 @@ public class Bank {
 			throw new AccountDoesNotExistException();
 		}
 		else {
+			//Chcę wypłacać z konta, a nie wyciągać info o koncie. Dlatego biorę, dodaję i modyfikuję listę.
 			Account account = accountlist.get(accountid);
-			account.deposit(money);
+			account.withdraw(money);
+			accountlist.put(accountid,account);
 		}
 	}
 	
@@ -133,9 +139,19 @@ public class Bank {
 	 * @param tobank Bank where receiving account resides
 	 * @param toaccount Id of receiving account
 	 */
-	public void addTimedPayment(String accountid, String payid, Integer interval, Integer next, Money amount, Bank tobank, String toaccount) {
-		Account account = accountlist.get(accountid);
-		account.addTimedPayment(payid, interval, next, amount, tobank, toaccount);
+	public void addTimedPayment(String accountid, String payid, Integer interval, Integer next, Money amount, Bank tobank, String toaccount) throws AccountDoesNotExistException {
+		//Chcemy sprawdzić czy konta istnieją
+		if (!accountlist.containsKey(accountid) || !tobank.accountlist.containsKey(toaccount)) {
+			throw new AccountDoesNotExistException();
+		}
+		else {
+			Account account = accountlist.get(accountid);
+			account.addTimedPayment(payid, interval, next, amount, tobank, toaccount);
+			//Chcemy z powrotem dodać konto do listy
+			accountlist.put(accountid, account);
+		}
+
+
 	}
 	
 	/**
@@ -146,6 +162,9 @@ public class Bank {
 	public void removeTimedPayment(String accountid, String id) {
 		Account account = accountlist.get(accountid);
 		account.removeTimedPayment(id);
+		//Modyfikujemy konto w liscie
+		accountlist.put(accountid, account);
+
 	}
 	
 	/**
