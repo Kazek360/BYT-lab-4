@@ -79,7 +79,7 @@ public class Bank {
 			throw new AccountDoesNotExistException();
 		}
 		else {
-			//Chcę wypłacać z konta, a nie wyciągać info o koncie. Dlatego biorę, dodaję i modyfikuję listę.
+			//Chcę wypłacać z konta, a nie wyciągać info o koncie. Dlatego biorę, odejmuję i modyfikuję listę.
 			Account account = accountlist.get(accountid);
 			account.withdraw(money);
 			accountlist.put(accountid,account);
