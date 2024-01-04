@@ -44,6 +44,7 @@ public class Bank {
 		}
 		else {
 			//Zmieniam get na put, bo chcemy założyć konto.
+			//Generalnie ta linijka powodowała najwięcej błędów.
 			accountlist.put(accountid, new Account(accountid, this.currency));
 		}
 	}
